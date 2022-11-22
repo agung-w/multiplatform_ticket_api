@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :studios
+  resources :cinemas
   resources :wallets
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
