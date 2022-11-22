@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :orders
   resources :studios
   resources :cinemas
   resources :wallets

@@ -10,15 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_22_164901) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_22_171230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cinemas", force: :cascade do |t|
+    t.string "name"
+    t.string "location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "credentials", force: :cascade do |t|
     t.string "access_token"
     t.string "refresh_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "order_id"
+    t.integer "movie_id"
+    t.bigint "user_id", null: false
+    t.bigint "studio_id", null: false
+    t.integer "quantity"
+    t.decimal "sub_total"
+    t.decimal "additional_charge"
+    t.decimal "discount"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_orders_on_movie_id"
+    t.index ["studio_id"], name: "index_orders_on_studio_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "studios", force: :cascade do |t|
+    t.bigint "cinema_id", null: false
+    t.string "code"
+    t.integer "capacity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cinema_id"], name: "index_studios_on_cinema_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -40,5 +73,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_22_164901) do
     t.index ["user_id"], name: "index_wallets_on_user_id"
   end
 
+  add_foreign_key "orders", "studios"
+  add_foreign_key "orders", "users"
+  add_foreign_key "studios", "cinemas"
   add_foreign_key "wallets", "users"
 end
