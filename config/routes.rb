@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  resources :transactions
-  resources :orders
-  resources :studios
-  resources :cinemas
-  resources :wallets
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -12,8 +8,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users
+      resources :transactions
+      resources :orders
+      resources :studios
+      resources :cinemas
+      resources :wallets
     end
-    get '/user_info/:id'=>'user#user_info'
   end
   
 end
