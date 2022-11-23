@@ -6,8 +6,7 @@ class User < ApplicationRecord
             u.username=response[:info][:name]
             u.email=response[:info][:email]
             u.password=SecureRandom.hex(15)
-            u.credentials.access_token=response[:credentials][:token]
-            u.credentials.refresh_token=response[:credentials][:refresh_token]
+            # Credentials.create({user_id:u.id,access_token:response[:credentials][:token],refresh_token:response[:credentials][:refresh_token]})
         end
     end
 end
