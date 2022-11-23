@@ -9,4 +9,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   get '/auth/:provider/callback'=>'authentication/authcontroller#omniauth'
+  namespace :api do
+    get '/user_info/:id'=>'user#user_info'
+  end
+  
 end
