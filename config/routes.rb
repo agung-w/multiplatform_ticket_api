@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users
+      get 'user_detail', to: 'users#user_detail'
       resources :transactions
       resources :orders
       resources :studios

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :transaction do
-    order { nil }
-    user { nil }
+    order { 1 }
+    user { 1 }
     type { "" }
     total { "9.99" }
     status { "MyString" }

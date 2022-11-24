@@ -11,8 +11,8 @@ module Api
       end
 
       # GET /users/{username}
-      def show
-        render json: @user, status: :ok
+      def user_detail
+        render json: {data:@user}, status: :ok
       end
 
       # POST /users
