@@ -1,11 +1,11 @@
 module Api
   module V1
     class StudiosController < ApplicationController
-      
-      before_action :set_studio, only: %i[ show update destroy ]
+      before_action :authorize_request, except: %i[create index]
+      before_action :set_studio, only: %i[ studio_info ]
 
-      def studio_info
-        render json: @studio
+      def studio_detail
+        render json: {data:@studio}, status: :ok
       end
 
 

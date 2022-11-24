@@ -7,13 +7,14 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback'=>'authentication/auth#omniauth'
   namespace :api do
     namespace :v1 do
-      resources :users
+      # resources :users
       get 'user_detail', to: 'users#user_detail'
-      resources :transactions
-      resources :orders
-      resources :studios
-      resources :cinemas
-      resources :wallets
+      get 'studio_detail', to: 'studios#studio_detail'
+      # resources :transactions
+      # resources :orders
+      # resources :studios
+      # resources :cinemas
+      # resources :wallets
     end
   end
   
