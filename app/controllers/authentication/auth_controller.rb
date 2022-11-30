@@ -10,7 +10,7 @@ class Authentication::AuthController < ApplicationController
     end
     def emailauth
         @user = User.find_by_email(params[:email])
-        if @user&.authenticate(params[:password])
+        if @user&.authenticate(params[:password]) 
           token = AuthenticationTokenService.encode(payload(user))
           render json: { token: token}, status: :ok
         else

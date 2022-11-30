@@ -82,4 +82,5 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'jwt'
-gem 'kimurai'
+gem "kimurai", github: "n-studio/kimuraframework", branch: "dev/ruby-3"
+gem "rbcat", github: "deanopound/rbcat", branch: "fix/support-ruby-3.0.0"

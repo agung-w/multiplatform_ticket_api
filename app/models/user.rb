@@ -3,10 +3,10 @@ class User < ApplicationRecord
     has_many :credentials
     validates :name, length: { in: 3..60 },presence:true
     validates :password, length: {in: 6..72}
-    validates :email,:name,:phone, presence: true
+    validates :email,:name, presence: true
     validates :email,:phone, uniqueness: true
     validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
-    validates :phone,:numericality => true,:length => { :minimum => 10, :maximum => 15 }
+    # validates :phone,:numericality => true,:length => { :minimum => 10, :maximum => 15 }
     def self.from_omniauth(response)
         User.find_or_create_by(uid:response[:uid],provider:response[:provider]) do |u|
             u.name=response[:info][:name]

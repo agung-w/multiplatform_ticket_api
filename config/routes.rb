@@ -7,9 +7,12 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback'=>'authentication/auth#omniauth'
   namespace :api do
     namespace :v1 do
-      # resources :users
+      resources :users
       get 'user_detail', to: 'users#user_detail'
       get 'studio_detail', to: 'studios#studio_detail'
+      get'/movies/scrape',to: 'movies#scrape'
+      get'/movies',to: 'movies#index'
+
       # resources :transactions
       # resources :orders
       # resources :studios
@@ -17,5 +20,6 @@ Rails.application.routes.draw do
       # resources :wallets
     end
   end
+  
   
 end
