@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_24_155109) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_30_033501) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_155109) do
     t.string "tmdb_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "vote_average"
+    t.string "airing_status"
   end
 
   create_table "orders", force: :cascade do |t|

@@ -41,6 +41,8 @@ class MovieSpider < Kimurai::Base
           item [:title]=movie["results"][0]['title']
           item [:poster_url]=movie["results"][0]['poster_path']
           item [:tmdb_id]=movie["results"][0]['id']
+          item [:vote_average]=movie["results"][0]['vote_average']
+          item [:airing_status]="airing"
           Movie.where(item).first_or_create
         end
         count+=1
