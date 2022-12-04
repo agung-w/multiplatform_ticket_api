@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_24_155109) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_04_142723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_155109) do
     t.string "email"
     t.string "password_digest"
     t.text "phone_number"
+    t.boolean "verified"
     t.string "country_code"
     t.string "reset_password_token"
     t.datetime "reset_password_at", precision: nil
@@ -82,6 +83,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_155109) do
     t.string "image_url"
     t.string "uid"
     t.string "provider"
+  end
+
+  create_table "verification_codes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "code"
+    t.datetime "expire_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_verification_codes_on_user_id"
   end
 
   create_table "wallets", force: :cascade do |t|
@@ -97,5 +107,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_155109) do
   add_foreign_key "studios", "cinemas"
   add_foreign_key "transactions", "orders"
   add_foreign_key "transactions", "users"
+  add_foreign_key "verification_codes", "users"
   add_foreign_key "wallets", "users"
 end

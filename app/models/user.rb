@@ -4,7 +4,7 @@ class User < ApplicationRecord
     validates :name, length: { in: 3..60 },presence:true
     # validates :password, length: {in: 6..72}
     # validates :email,:name, presence: true
-    # validates :email,:phone, uniqueness: true
+    validates :phone_number, uniqueness: true
     # validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
     # validates :phone,:numericality => true,:length => { :minimum => 10, :maximum => 15 }
     def self.from_omniauth(response)
@@ -15,4 +15,16 @@ class User < ApplicationRecord
             u.password=SecureRandom.hex(15)
         end
     end
+
+    def self.create_with_phone(user)
+
+    end
+
+    # def self.create(response)
+    #     User.find_by(phone:response[:phone])do|u|
+    #         u.name=response[:name]
+    #         u.name=response[:name]
+    #         u.name=response[:name]
+    #     end
+    # end
 end
