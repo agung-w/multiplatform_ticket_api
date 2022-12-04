@@ -1,14 +1,14 @@
 class Authentication::AuthController < ApplicationController
     skip_before_action :verify_authenticity_token
-    def omniauth
-        user=User.from_omniauth(request.env['omniauth.auth'])
-        if user.valid?
-            token = AuthenticationTokenService.encode(payload(user))
-            render json: { token: token}, status: :ok
-        else
-            render json: { error: 'unauthorized' }, status: :unauthorized
-        end
-    end
+    # def omniauth
+    #     user=User.from_omniauth(request.env['omniauth.auth'])
+    #     if user.valid?
+    #         token = AuthenticationTokenService.encode(payload(user))
+    #         render json: { token: token}, status: :ok
+    #     else
+    #         render json: { error: 'unauthorized' }, status: :unauthorized
+    #     end
+    # end
 
     def login_by_phone
         user=User.find_by(phone_number:login_params[:phone_number])
@@ -67,15 +67,15 @@ class Authentication::AuthController < ApplicationController
 
     
     
-    def emailauth
-        @user = User.find_by_email(params[:email])
-        if @user&.authenticate(params[:password]) 
-          token = AuthenticationTokenService.encode(payload(user))
-          render json: { token: token}, status: :ok
-        else
-          render json: { error: 'unauthorized' }, status: :unauthorized
-        end
-      end
+    # def emailauth
+    #     @user = User.find_by_email(params[:email])
+    #     if @user&.authenticate(params[:password]) 
+    #       token = AuthenticationTokenService.encode(payload(user))
+    #       render json: { token: token}, status: :ok
+    #     else
+    #       render json: { error: 'unauthorized' }, status: :unauthorized
+    #     end
+    #   end
     
     private
 
