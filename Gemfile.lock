@@ -97,6 +97,8 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    authy (3.0.1)
+      httpclient (>= 2.5.3.3)
     bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.14.0)
@@ -149,6 +151,7 @@ GEM
     headless (2.3.1)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
+    httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
@@ -233,6 +236,8 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (5.0.0)
     puma (5.6.5)
       nio4r (~> 2.0)
@@ -350,6 +355,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  authy
   bcrypt (~> 3.1.7)
   bootsnap
   capybara
@@ -365,6 +371,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   pg (~> 1.1)
+  pry-rails
   puma (~> 5.0)
   rails (~> 7.0.4)
   rails-controller-testing

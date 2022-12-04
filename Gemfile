@@ -63,6 +63,7 @@ group :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
+  gem 'pry-rails'
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
@@ -82,5 +83,6 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'jwt'
+gem 'authy'
 gem "kimurai", github: "n-studio/kimuraframework", branch: "dev/ruby-3"
 gem "rbcat", github: "deanopound/rbcat", branch: "fix/support-ruby-3.0.0"
