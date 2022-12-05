@@ -11,12 +11,12 @@ class Authentication::AuthController < ApplicationController
     # end
 
     def login_by_phone
-        user=User.find_by(phone_number:login_params[:phone_number])
+        user=User.find_by(phone_number:login_params[:phone_number],verified:true)
         if user&.authenticate(login_params[:password]) 
             token = AuthenticationTokenService.encode(payload(user))
-            render json: { token: token}, status: :ok
+            render json: {data:{token: token} }
         else
-            render json: { error: 'unauthorized' }, status: :unauthorized
+            render json: {status: 401, error: 'User not registered' }
         end
     end
 
@@ -28,40 +28,36 @@ class Authentication::AuthController < ApplicationController
         end
         if user.verified!=true
             send_otp_wa(user)
+        else 
+            render json: {error:{status: 400,message:"Phone already registered"}}
         end
     end
 
     def verify_phone
-        code=VerificationCode.verify(verify_params[:user_id],verify_params[:code])
-        user=User.find_by(id:verify_params[:user_id],verified:nil)
-        if code && user
+        code=VerificationCode.verify(verify_params[:phone_number],verify_params[:code])
+        if code
             if code.expire_at.to_i>Time.now.to_i
-                updated=user.update(verified: true)
+                render json: {data:{message:"Code verification success"}}
             else
-                render json: {errors:{message:"Code already expired"}}, status: :bad_request
+                render json: {errors:{status: 400,message:"Code already expired"}}
             end
         end
-        if updated 
-            render json: {data:{message:"Account successfully verified"}}, status: :ok 
-        end
         if !code
-            render json: {errors:{message:"Invalid code"}}, status: :bad_request
-        end
-        if !user && User.find_by(id:verify_params[:user_id])
-            render json: {errors:{message:"Phone already registered"}}, status: :bad_request
-        end        
+            render json: {errors:{status: 400,message:"Invalid code"}}
+        end       
     end
 
     def create_password
-        user=User.find_by(id:create_password_params[:user_id])
+        user=User.find_by(phone_number:create_password_params[:phone_number])
         if user
-            updated=user.update(password: create_password_params[:password])
+            updated=user.update(verified: true,password: create_password_params[:password])
+            token = AuthenticationTokenService.encode(payload(user))
         else
-            render json: {errors:{message:"Invalid user id"}}, status: :bad_request
+            render json: {errors:{status: 400,message:"Invalid user id"}}
         end
 
         if updated
-            render json: {data:{message:"Password successfully created"}}, status: :ok 
+            render json: {data:{message:"Password successfully created",token:token}}
         end
     end
 
@@ -89,10 +85,10 @@ class Authentication::AuthController < ApplicationController
         params.permit(:email, :password)
     end
     def create_password_params
-        params.require(:user).permit(:user_id,:password)
+        params.require(:user).permit(:phone_number,:password)
     end
     def verify_params
-        params.require(:user).permit(:user_id, :code)
+        params.require(:user).permit(:phone_number, :code)
     end
     def payload(user)
         {
@@ -110,6 +106,11 @@ class Authentication::AuthController < ApplicationController
             recipient_number: ("62"+user.phone_number).to_i,
             message: "Cinematix account verification code : #{verification.code} "
         )
-        render json: message_sent
+        if !message_sent.error
+            render json: {data:{message:"Verification code sent"}}, status: :ok 
+        else
+            render json: {error:{message:"Cant sent code at the moment"}}, status: :bad_request 
+        end
+    
     end
 end

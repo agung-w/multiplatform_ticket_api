@@ -83,14 +83,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_04_142723) do
     t.string "image_url"
     t.string "uid"
     t.string "provider"
+    t.index ["phone_number"], name: "index_users_on_phone_number"
   end
 
   create_table "verification_codes", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.text "phone_number"
     t.string "code"
     t.datetime "expire_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["phone_number"], name: "index_verification_codes_on_phone_number"
     t.index ["user_id"], name: "index_verification_codes_on_user_id"
   end
 
