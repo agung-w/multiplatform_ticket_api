@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users
+      get '/wallet/user_balance', to: 'wallets#show_user_wallet'
+      post '/wallet/activate', to: 'wallets#activate'
+      put '/wallet/top_up', to: 'wallets#top_up'
+
       get 'user_detail', to: 'users#user_detail'
       get 'studio_detail', to: 'studios#studio_detail'
       get'/movies/scrape',to: 'movies#scrape'

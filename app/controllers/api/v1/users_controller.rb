@@ -1,6 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      skip_before_action :verify_authenticity_token
       before_action :authorize_request, except: %i[create index]
       before_action :find_user, except: %i[create index]
 
@@ -42,7 +43,7 @@ module Api
       private
 
       def find_user
-        @user= User.find_by_email!(@current_user[:email])
+        @user= User.find_by!(phone_number:@current_user[:phone_number])
         rescue ActiveRecord::RecordNotFound
           render json: { errors: params }, status: :not_found
       end

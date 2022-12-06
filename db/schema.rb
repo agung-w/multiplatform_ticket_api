@@ -58,9 +58,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_04_142723) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.bigint "order_id", null: false
+    t.bigint "order_id"
     t.bigint "user_id", null: false
-    t.string "type"
+    t.string "transaction_type"
+    t.string "transaction_method"
     t.decimal "total"
     t.string "status"
     t.datetime "created_at", null: false
