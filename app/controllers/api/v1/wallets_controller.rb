@@ -21,10 +21,10 @@ module Api
         if (top_up_params[:amount].to_i>0 && top_up_params[:amount].to_i<2000000)
           @wallet = Wallet.top_up(@current_user.id,top_up_params)
           if @wallet
-            if !@wallet.errors
+            if @wallet.errors.size==0
               render json: {data:{message:"Top up success",wallet: @wallet}}, status: :created
             else
-              render json: {error:{status:422,message: @wallet}}, status: :unprocessable_entity
+              render json: {error:{status:422,message: @wallet.errors}}, status: :unprocessable_entity
             end
           else
             render json:{error:{status:422,message: "Wallet is not activated yet"}}, status: :unprocessable_entity

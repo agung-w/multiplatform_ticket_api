@@ -16,5 +16,25 @@ class User < ApplicationRecord
     #         u.password=SecureRandom.hex(15)
     #     end
     # end
-
+    def self.phone_registration(params)
+        user=User.find_by(phone_number:params[:phone_number])
+        if user
+            unless user.verified
+                user.update(
+                    name:params[:name],
+                    country_code:"62",
+                    password:SecureRandom.hex(15)
+                )
+            end
+            user
+        else
+            user = self.create(
+                phone_number:params[:phone_number],
+                name:params[:name],
+                country_code:"62",
+                password:SecureRandom.hex(15)
+            )
+            user
+        end
+    end
 end

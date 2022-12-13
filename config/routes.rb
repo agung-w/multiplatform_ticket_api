@@ -6,9 +6,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   get '/auth/:provider/callback'=>'authentication/auth#omniauth'
   get '/auth/phone'=>'authentication/auth#phone_registration'
-  post '/auth/register'=>'authentication/auth#register_by_phone'
-  post '/auth/verifyphone'=>'authentication/auth#verify_phone'
-  put '/auth/createpassword'=>'authentication/auth#create_password'
+ 
   post '/auth/login'=>'authentication/auth#login_by_phone'
   namespace :api do
     namespace :v1 do
@@ -17,11 +15,18 @@ Rails.application.routes.draw do
       post '/wallet/activate', to: 'wallets#activate'
       put '/wallet/top_up', to: 'wallets#top_up'
 
-      get 'user_detail', to: 'users#user_detail'
+      get 'user/detail', to: 'users#user_detail'
+      post 'user/register'=>'users#register_by_phone'
+      post 'user/verifyphone'=>'users#verify_phone'
+      put 'user/createpassword'=>'users#create_password'
+
+
       get 'studio_detail', to: 'studios#studio_detail'
+
       get'/movies/scrape',to: 'movies#scrape'
       get'/movies',to: 'movies#index'
 
+      get '/transactions/show',to: 'transactions#show'
       # resources :transactions
       # resources :orders
       # resources :studios
