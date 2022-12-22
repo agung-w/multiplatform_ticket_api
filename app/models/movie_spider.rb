@@ -9,7 +9,9 @@ class MovieSpider < Kimurai::Base
     }
     def self.process(url)
       @start_urls = [url]
+      Movie.all.update_all(airing_status:nil)
       self.crawl!
+      
     end
   
     # def parse(response, url:, data: {})
@@ -35,15 +37,17 @@ class MovieSpider < Kimurai::Base
       response.xpath("//div[@class='item movie']").each do |movie|
         current_item= movie.xpath("//h2/a")[count]&.text
         unless current_item.blank? || current_item.nil?
-          uri = URI("https://api.themoviedb.org/3/search/movie?api_key=a750a1b20a0e229287dc030aa3700e95&language=en-US&query=#{current_item}&page=1&include_adult=false")
+          uri = URI("https://api.themoviedb.org/3/search/movie?api_key=a750a1b20a0e229287dc030aa3700e95&language=id-ID&query=#{current_item}&page=1&include_adult=false")
           http = Net::HTTP.get(uri, {'Content-Type' => 'application/json'})
           movie=JSON.parse(http)
-          item [:title]=movie["results"][0]['title']
-          item [:poster_url]=movie["results"][0]['poster_path']
           item [:tmdb_id]=movie["results"][0]['id']
-          item [:vote_average]=movie["results"][0]['vote_average']
-          item [:airing_status]="airing"
-          Movie.where(item).first_or_create
+          currentMovie=Movie.where(tmdb_id:item[:tmdb_id]).first_or_create
+          currentMovie.update(
+            airing_status:"airing",
+            vote_average:movie["results"][0]['vote_average'],
+            poster_url:movie["results"][0]['poster_path'],
+            title:movie["results"][0]['title']
+          )
         end
         count+=1
       end

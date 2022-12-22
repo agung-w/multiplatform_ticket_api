@@ -3,7 +3,7 @@ module Api
     class MoviesController < ApplicationController
       # before_action :authorize_request
       def index
-        @movies = Movie.all
+        @movies = Movie.where(airing_status:"airing").order("id ASC") 
         render json: {data:@movies}, status: :ok
       end
       def scrape

@@ -18,10 +18,22 @@ class ApplicationController < ActionController::Base
         verification=VerificationCode.generate(user)
         client=WhatsappSdk::Api::Client.new(ENV['ACCESS_TOKEN'])
         messages_api = WhatsappSdk::Api::Messages.new(client)
-        message_sent = messages_api.send_text(
+        message_sent = messages_api.send_template(
             sender_id: ENV['SENDER_ID'].to_i, 
             recipient_number: ("62"+user.phone_number).to_i,
-            message: "Cinematix account verification code : #{verification.code} "
+            name:'cinematix_otp',
+            language: "en_US",
+            components_json:[
+                {
+                    "type": "body",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "text": "#{verification.code}"
+                        }
+                    ]
+                }
+            ]
         )
         if !message_sent.error
             render json: {data:{message:"Verification code sent"}}

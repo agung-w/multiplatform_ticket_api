@@ -20,8 +20,16 @@ Rails.application.routes.draw do
       post 'user/verifyphone'=>'users#verify_phone'
       put 'user/createpassword'=>'users#create_password'
 
+      post 'order/ticket'=>'orders#order_ticket'
+      post 'order/cancel'=>'orders#cancel_order'
+      
+      post 'pay/ticket'=>'orders#pay_ticket_order'
+
+      get 'ticket/all'=>'orders#all_ticket'
 
       get 'studio_detail', to: 'studios#studio_detail'
+      post 'studio/reserved_seat', to: 'studios#get_reserved_seat'
+      get 'cinemas', to: 'cinemas#index'
 
       get'/movies/scrape',to: 'movies#scrape'
       get'/movies',to: 'movies#index'

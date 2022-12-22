@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_13_100006) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_20_171242) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -39,11 +39,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_100006) do
     t.bigint "studio_id", null: false
     t.integer "quantity"
     t.decimal "sub_total"
-    t.decimal "additional_charge"
     t.decimal "discount"
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "platform_fee"
+    t.decimal "admin_fee"
+    t.decimal "total"
+    t.string "schedule"
     t.index ["movie_id"], name: "index_orders_on_movie_id"
     t.index ["studio_id"], name: "index_orders_on_studio_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -55,7 +58,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_100006) do
     t.integer "capacity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "row"
+    t.integer "column"
+    t.decimal "price"
     t.index ["cinema_id"], name: "index_studios_on_cinema_id"
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "user_id"
+    t.integer "cinema_id"
+    t.integer "studio_id"
+    t.string "schedule"
+    t.string "seat"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "movie_id"
   end
 
   create_table "transactions", force: :cascade do |t|

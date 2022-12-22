@@ -34,18 +34,7 @@ module Api
         end
       end
 
-      def pay
-        if (top_up_params[:amount].to_i>0)
-          @wallet = Wallet.top_up(@current_user.id,top_up_params)
-          if !@wallet.errors
-            render json: {data:{message:"Top up success",wallet: @wallet}}, status: :created
-          else
-            render json: {error:{status:422,message: @wallet}}, status: :unprocessable_entity
-          end
-        else
-          render json:{error:{status:422,message: "Invalid top up amount"}}, status: :unprocessable_entity
-        end
-      end
+      
 
 
       def activate
@@ -68,9 +57,7 @@ module Api
         params.require(:wallet).permit(:amount, :method)
       end
 
-      def pay
-        params.require(:wallet).permit(:amount, :payment_purpose)
-      end
+      
 
       def get_balance
         @user= User.find_by!(phone_number:@current_user[:phone_number])

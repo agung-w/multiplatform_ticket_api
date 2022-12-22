@@ -7,7 +7,7 @@ module Api
       # GET /transactions/1
       def show
         @transaction = Transaction.where(user_id:@current_user).order('transactions.created_at desc')
-        render json: {data:{transactions: @transaction}}
+        render json: {data:{transactions: @transaction.as_json}}
       end
 
 

@@ -22,4 +22,23 @@ class Wallet < ApplicationRecord
     end
   end 
   
+  def self.pay(id,order)
+    wallet=self.find_by(user_id:id) 
+    if wallet
+      if wallet.update(balance:wallet.balance - order.total)
+        transaction = Transaction.create(
+          user_id:id,
+          order_id:order.id,
+          total:order.total,
+          transaction_type:"BUY TICKET",
+          status:"SUCCESS",
+          transaction_method:"Wallet"
+        )
+        wallet
+        ##harusnya dikasih rollback
+      else
+        wallet.errors
+      end
+    end
+  end
 end
