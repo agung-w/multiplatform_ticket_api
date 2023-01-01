@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       post 'pay/ticket'=>'orders#pay_ticket_order'
 
       get 'ticket/all'=>'orders#all_ticket'
+      get 'ticket/active'=>'orders#active_ticket'
 
       get 'studio_detail', to: 'studios#studio_detail'
       post 'studio/reserved_seat', to: 'studios#get_reserved_seat'

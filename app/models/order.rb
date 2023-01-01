@@ -27,6 +27,13 @@ class Order < ApplicationRecord
     }
   end
 
+  def self.get_all_ticket(id)
+    return self.where(user_id:id,status:"PAID").order('orders.created_at desc')
+  end
+  def self.get_active_ticket(id)
+    date = DateTime.parse("2011-05-19 10:30:14")
+    self.where(user_id:id,status:"PAID",schedule:(Time.now + 5.hour)..).order('orders.created_at desc')
+  end
   def pay(id,method,method_fee)
     @order=Order.find(id)
     total=@order.total+method_fee

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_20_171242) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_22_164902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_20_171242) do
     t.decimal "platform_fee"
     t.decimal "admin_fee"
     t.decimal "total"
-    t.string "schedule"
+    t.datetime "schedule", precision: nil
     t.index ["movie_id"], name: "index_orders_on_movie_id"
     t.index ["studio_id"], name: "index_orders_on_studio_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -69,11 +69,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_20_171242) do
     t.integer "user_id"
     t.integer "cinema_id"
     t.integer "studio_id"
-    t.string "schedule"
     t.string "seat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "movie_id"
+    t.datetime "schedule", precision: nil
   end
 
   create_table "transactions", force: :cascade do |t|

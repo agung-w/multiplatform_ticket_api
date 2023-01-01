@@ -9,6 +9,7 @@ module Api
       def order_ticket 
         sub_total=order_params[:quantity]*Studio.find(order_params[:studio_id]).price
         platform_fee=sub_total/10
+        schedule=DateTime.parse(order_params[:schedule])
         @order = Order.new(
           user_id:@current_user.id,
           movie_id:order_params[:movie_id],
@@ -16,7 +17,7 @@ module Api
           quantity:order_params[:quantity],
           sub_total:order_params[:quantity]*Studio.find(order_params[:studio_id]).price,
           platform_fee:platform_fee,
-          schedule:order_params[:schedule],
+          schedule:schedule,
           total:(sub_total+platform_fee),
           status:"UNPAID"
         )
@@ -28,7 +29,7 @@ module Api
               order_id:@order.id,
               studio_id:order_params[:studio_id],
               movie_id:order_params[:movie_id],
-              schedule:order_params[:schedule],
+              schedule:schedule,
               seat:seat
             )
           end          
@@ -87,12 +88,12 @@ module Api
 
 
       def active_ticket
-        @order=Order.where(user_id:@current_user.id,status:"PAID",schedule: date.midnight..date.end_of_day).order('orders.created_at desc')
+        @order=Order.get_active_ticket(@current_user.id)
         render json: {data:{tickets:@order.as_json}}
       end
       
       def all_ticket
-        @order=Order.where(user_id:@current_user.id,status:"PAID").order('orders.created_at desc')
+        @order=Order.get_all_ticket(@current_user.id)
         render json: {data:{tickets:@order.as_json}}
       end
 
