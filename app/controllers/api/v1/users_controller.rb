@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       skip_before_action :verify_authenticity_token
-      before_action :authorize_request, except: %i[register_by_phone verify_phone create_password]
+      before_action :authorize_request, except: %i[register_by_phone verify_phone create_password change_password get_change_password_token]
       before_action :find_user, only: %i[user_detail]
 
       # GET /users
@@ -56,6 +56,43 @@ module Api
               render json: {data:{message:"Password successfully created",token:token}}
           end
       end
+      
+
+      def get_change_password_token
+        user=User.find_by(phone_number:change_password_params[:phone_number],verified:true)
+        if user
+          send_otp_wa(user)
+        else
+          render json: {error:{status: 404,message:"User not found"}},status: :not_found
+        end
+      end
+
+      def change_password
+        user=User.find_by(phone_number:change_password_params[:phone_number])
+        if user
+            updated=user.update(password: change_password_params[:password])
+        else
+            render json: {error:{status: 400,message:"Invalid user id"}},status: :bad_request
+        end
+
+        if updated
+            render json: {data:{message:"Password successfully changed"}}
+        end
+      end
+
+      def add_email
+        user=User.find(@current_user.id)
+        if user
+            updated=user.update(email: add_email_params[:email])
+            token = AuthenticationTokenService.encode(payload(user))
+        else
+            render json: {error:{status: 400,message:"Invalid user id"}},status: :bad_request
+        end
+
+        if updated
+            render json: {data:{message:"Email added successfully"}}
+        end
+    end
 
       private
         def phone_params
@@ -63,6 +100,12 @@ module Api
         end
         def create_password_params
             params.require(:user).permit(:phone_number,:password)
+        end
+        def change_password_params
+          params.require(:user).permit(:phone_number,:password)
+        end
+        def add_email_params
+          params.require(:user).permit(:email)
         end
         def verify_params
             params.require(:user).permit(:phone_number, :code)

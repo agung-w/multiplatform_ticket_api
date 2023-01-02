@@ -19,6 +19,9 @@ Rails.application.routes.draw do
       post 'user/register'=>'users#register_by_phone'
       post 'user/verifyphone'=>'users#verify_phone'
       put 'user/createpassword'=>'users#create_password'
+      put 'user/add_email'=>'users#add_email'
+      post 'user/get_change_password_token'=>'users#get_change_password_token'
+      put 'user/change_password'=>'users#change_password'
 
       post 'order/ticket'=>'orders#order_ticket'
       post 'order/cancel'=>'orders#cancel_order'
